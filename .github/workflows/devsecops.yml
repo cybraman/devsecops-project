@@ -123,6 +123,7 @@ jobs:
         with:
          target: "http://localhost:5000"
          fail_action: false
+         artifact_name: zap-scan
        
 
       - name: Upload ZAP Reports
