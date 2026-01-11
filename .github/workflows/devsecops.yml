@@ -47,7 +47,7 @@ jobs:
       - name: Create build artifact
         run: |
           mkdir build
-          cp -r app requirements.txt build/
+          cp -r app/requirements.txt build/
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
