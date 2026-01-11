@@ -14,11 +14,20 @@ spec:
       labels:
         app: flask-app
     spec:
+      # Pod-level security context (recommended)
+      securityContext:
+        runAsNonRoot: true
+
       containers:
         - name: flask-app
           image: ghcr.io/<your-username>/<your-repo>:sha-xxxxxxx
           # Image tag will be updated automatically by CI/CD
           imagePullPolicy: Always
+
+          # Container-level security context (REQUIRED by Semgrep)
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
 
           ports:
             - containerPort: 5000
@@ -33,14 +42,14 @@ spec:
 
           livenessProbe:
             httpGet:
-              path: /
+              path: /health
               port: 5000
             initialDelaySeconds: 30
             periodSeconds: 10
 
           readinessProbe:
             httpGet:
-              path: /
+              path: /health
               port: 5000
             initialDelaySeconds: 5
             periodSeconds: 5

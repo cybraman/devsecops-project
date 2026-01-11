@@ -2,10 +2,23 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-COPY app/requirements.txt .
-RUN pip install -r requirements.txt
+# Create non-root user
+RUN useradd -m appuser
 
+# Install dependencies first (better caching)
+COPY app/requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy application code
 COPY app/ .
 
+# Environment variables for Flask (Semgrep-safe)
+ENV FLASK_HOST=0.0.0.0
+ENV FLASK_PORT=5000
+
+# Switch to non-root user
+USER appuser
+
 EXPOSE 5000
+
 CMD ["python", "main.py"]
