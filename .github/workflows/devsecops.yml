@@ -82,7 +82,7 @@ jobs:
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
-          password: ${{ secrets.TOKEN }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Docker metadata
         id: meta
@@ -94,29 +94,23 @@ jobs:
             type=ref,event=branch
             latest
 
+      # 🔧 FIX 1: Build LOCAL image
       - name: Build Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: false
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          load: true
-      
-      
+        run: docker build -t flask-app:local .
 
+      # 🔧 FIX 2: Trivy scans LOCAL image
       - name: Trivy Image Scan
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:sha-${{ github.sha }}
+          image-ref: flask-app:local
           exit-code: 1
-          format: table
           ignore-unfixed: true
           severity: CRITICAL,HIGH
 
+      # 🔧 FIX 3: ZAP runs LOCAL image
       - name: Run App Container
         run: |
-          docker run -d -p 5000:5000 --name zap-test ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:sha-${{ github.sha }}
+          docker run -d -p 5000:5000 --name zap-test flask-app:local
           sleep 15
 
       - name: OWASP ZAP Baseline Scan
@@ -128,7 +122,7 @@ jobs:
       - name: Stop Container
         run: docker stop zap-test && docker rm zap-test
 
-
+      # Push ONLY after security scans pass
       - name: Push Docker image
         uses: docker/build-push-action@v5
         with:
@@ -148,7 +142,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          token: ${{ secrets.TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Update Kubernetes deployment file
         env:
@@ -156,18 +150,13 @@ jobs:
           GITHUB_REPOSITORY: ${{ github.repository }}
           REGISTRY: ghcr.io
         run: |
-          # Define the new image with tag
           NEW_IMAGE="${REGISTRY}/${GITHUB_REPOSITORY}:${IMAGE_TAG}"
-          
-          # Update the deployment file directly
           sed -i "s|image: ${REGISTRY}/.*|image: ${NEW_IMAGE}|g" kubernetes/deployment.yaml
-          
-          # Verify the change
           echo "Updated deployment to use image: ${NEW_IMAGE}"
           grep -A 1 "image:" kubernetes/deployment.yaml
-      
+
       - name: Commit and push changes
         run: |
           git add kubernetes/deployment.yaml
-          git commit -m "Update Kubernetes deployment with new image tag: ${{ needs.docker.outputs.image_tag }} [skip ci]" || echo "No changes to commit"
+          git commit -m "Update Kubernetes deployment with new image tag: ${{ needs.docker.outputs.image_tag }} [skip ci]" || echo "No changes"
           git push
