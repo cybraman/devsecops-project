@@ -2,6 +2,7 @@ name: DevSecOps CI/CD Pipeline
 permissions:
   contents: write
   actions: write
+  packages: write
   pull-requests: write
   issues: write
 
