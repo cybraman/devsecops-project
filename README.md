@@ -1,3 +1,45 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # DevSecOps Flask Application Beginner friendly project
 
 A production-grade **DevSecOps project** demonstrating secure CI/CD practices using:
