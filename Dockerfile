@@ -3,7 +3,7 @@ FROM python:3.11.8-alpine
 WORKDIR /app
 
 # Create non-root user
-RUN useradd -m appuser
+RUN adduser -D appuser
 
 # Install dependencies first (better caching)
 COPY app/requirements.txt .

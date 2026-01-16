@@ -1,7 +1,21 @@
 <!-- Banner -->
 ![DevSecOps Banner](images/devsecops_banner.png)
 
-# 🚀 DevSecOps Web UI — CI/CD + Container Security + AWS EC2 + Kind (Kubernetes) + Argo CD (GitOps)
+# DevSecOps Pipeline Starter
+
+---
+
+## 🏷️ Tech Stack & Badges
+
+<p align="left">
+  <img src="https://img.shields.io/badge/Python-3.11-blue?logo=python" alt="Python" />
+  <img src="https://img.shields.io/badge/Flask-2.3.2-green?logo=flask" alt="Flask" />
+  <img src="https://img.shields.io/badge/Docker-Container-blue?logo=docker" alt="Docker" />
+  <img src="https://img.shields.io/badge/GitHub%20Actions-CI%2FCD-2088FF?logo=github-actions&logoColor=white" alt="GitHub Actions" />
+  <img src="https://img.shields.io/badge/Kubernetes-kind-326ce5?logo=kubernetes" alt="Kubernetes" />
+  <img src="https://img.shields.io/badge/Argo%20CD-GitOps-ef7b4d?logo=argo" alt="Argo CD" />
+  <img src="https://img.shields.io/badge/AWS-EC2-FF9900?logo=amazon-aws" alt="AWS EC2" />
+</p>
 
 ---
 
@@ -145,12 +159,16 @@ pytest ../tests
 - **Security Group:** Allow SSH (22), HTTP (80), and custom ports (5000, 30080, 9000)
 
 ![EC2 Instance](images/ec2_instance.png)
-![Security Group](images/security_group.png)
+![EC2 Setup](images/ec2_config.png)
+![EC2 Setup](images/ec2_config2.png)
+![Security Group](images/aws_security_rules.png)
 
 #### 2. SSH into EC2
 ```bash
 ssh -i ~/Documents/devsecops.pem ubuntu@<EC2_PUBLIC_IP>
 ```
+![EC2 SSH](images/aws_ssh.png)
+![EC2 SSH](images/aws_ssh2.png)
 
 ---
 
@@ -224,7 +242,6 @@ kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/st
 kubectl get pods -n argocd -w
 ```
 
-![ArgoCD Pods](images/argocd_pods.png)
 
 #### Access Argo CD UI
 
@@ -245,8 +262,11 @@ kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.pas
 - **Username:** admin
 - **Password:** (output above)
 
+![ArgoCD Password](images/argocd_password.png)
 ![ArgoCD Dashboard](images/argocd_dashboard.png)
-
+![ArgoCD Config](images/argocd_config.png)
+![ArgoCD Config](images/argocd_config2.png)
+![ArgoCD Sync](images/argocd_sync.png)
 ---
 
 ### I. 🔑 Kubernetes Image Pull Secret (for GHCR)
@@ -256,7 +276,7 @@ export GHCR_TOKEN="paste_token_here"
 kubectl create secret docker-registry github-container-registry \
   --docker-server=ghcr.io \
   --docker-username=<github-username> \
-  --docker-password="$GHCR_TOKEN" \
+  --docker-password=<github-token> \
   --docker-email=<email>
 unset GHCR_TOKEN
 ```
@@ -270,37 +290,14 @@ unset GHCR_TOKEN
 - Add your Kubernetes manifests to `kubernetes/`
 - Create an Argo CD Application pointing to that folder
 - Argo will sync automatically
+- Push a commit and pipeline will run successfully
 
-![ArgoCD Synced](images/argocd_synced.png)
-
----
-
-## 📸 Images & Screenshots
-
-Below are key screenshots and diagrams referenced throughout the documentation, following the image naming convention in the `images/` folder:
-
-- ![DevSecOps Banner](images/devsecops_banner.png)
-- ![UI Screenshot](images/ui_screenshot.png)
-- ![CI/CD Pipeline](images/ci_cd_pipeline.png)
-- ![AWS Config](images/aws_config.png)
-- ![AWS Security Rules](images/aws_security_rules.png)
-- ![AWS SSH](images/aws_ssh.png)
-- ![AWS SSH 2](images/aws_ssh2.png)
-- ![AWS Connect](images/aws_connect.png)
-- ![AWS Docker](images/aws_docker.png)
-- ![AWS GHCR Login](images/aws_ghcrlogin.png)
-- ![EC2 Instance](images/ec2_instance.png)
-- ![ArgoCD Dashboard](images/argocd_dashboard.png)
-- ![ArgoCD Login](images/argocd_login.png)
-- ![ArgoCD Pods Running](images/argocd_pods_running_successfuly.png)
-- ![ArgoCD Pod Health](images/argocd_pod_health.png)
-- ![ArgoCD Config](images/argocd_config.png)
-- ![ArgoCD Config 2](images/argocd_config2.png)
-- ![ArgoCD Password](images/argocd _password.png)
-- ![Config Kubectl to Pull Images](images/config_kubectl_to_oull_images.png)
-- ![Running App on AWS Docker](images/running app on aws_docker.png)
+![ArgoCD Pods Status](images/ci_cd_pipeline.png)
+![ArgoCD Live](images/argocd_pods_running_successfully.png)
+![ArgoCD Pods Status](images/argocd_pod_health.png)
 
 ---
+
 
 ## 🐳 Docker Build & Local Testing
 
@@ -331,7 +328,7 @@ curl http://localhost:5000/health
 3. **Kubernetes can’t pull image:**
    - Ensure secret exists and is referenced in your Deployment
 
-For more help, see [GitHub Discussions](https://github.com/<your-username>/<repo-name>/discussions) or open an issue.
+For more help, see [GitHub Discussions](https://github.com/cybraman/devsecops-project/discussions) or open an issue.
 
 ---
 
