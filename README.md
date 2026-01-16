@@ -5,7 +5,7 @@
 
 ---
 
-## 🏷️ Tech Stack & Badges
+## Tech Stack & Project Badges
 
 <p align="left">
   <img src="https://img.shields.io/badge/Python-3.11-blue?logo=python" alt="Python" />
@@ -15,11 +15,16 @@
   <img src="https://img.shields.io/badge/Kubernetes-kind-326ce5?logo=kubernetes" alt="Kubernetes" />
   <img src="https://img.shields.io/badge/Argo%20CD-GitOps-ef7b4d?logo=argo" alt="Argo CD" />
   <img src="https://img.shields.io/badge/AWS-EC2-FF9900?logo=amazon-aws" alt="AWS EC2" />
+  <a href="https://github.com/cybraman/devsecops-project/actions"><img src="https://img.shields.io/github/workflow/status/cybraman/devsecops-project/CI?style=for-the-badge" alt="Build" /></a>
+  <a href="https://github.com/cybraman/devsecops-project/blob/main/LICENSE"><img src="https://img.shields.io/github/license/cybraman/devsecops-project?style=for-the-badge" alt="License" /></a>
+  <a href="https://github.com/cybraman/devsecops-project/graphs/contributors"><img src="https://img.shields.io/github/contributors/cybraman/devsecops-project?style=for-the-badge" alt="Contributors" /></a>
+  <a href="https://github.com/cybraman/devsecops-project/issues"><img src="https://img.shields.io/github/issues/cybraman/devsecops-project?style=for-the-badge" alt="Issues" /></a>
+  <a href="https://github.com/cybraman/devsecops-project/stargazers"><img src="https://img.shields.io/github/stars/cybraman/devsecops-project?style=for-the-badge" alt="Stars" /></a>
 </p>
 
 ---
 
-## 📑 Table of Contents
+## Table of Contents
 
 - [Project Overview](#project-overview)
 - [Repo Structure](#repo-structure)
@@ -36,7 +41,7 @@
 
 ---
 
-## 🗺️ Project Overview
+## Project Overview
 
 - **App:** Simple Flask web app with UI and API endpoints
 - **Pipeline:** GitHub Actions → Security Scans → Container Registry → AWS EC2 → Kubernetes (kind) → Argo CD (GitOps)
@@ -44,7 +49,7 @@
 
 ---
 
-## 📂 Repo Structure
+## Repo Structure
 
 ```
 app/                  # Flask app source
@@ -59,7 +64,7 @@ images/               # Supporting screenshots & diagrams
 
 ---
 
-## 🌐 App Features
+## App Features
 
 | Route           | Method | Description                                 |
 |-----------------|--------|---------------------------------------------|
@@ -72,15 +77,15 @@ images/               # Supporting screenshots & diagrams
 
 ---
 
-## 🖼️ UI Preview
+## UI Preview
 
 *The web UI running locally at http://localhost:5000*
 
 ---
 
-## 🚦 DevSecOps Pipeline: Step-by-Step
+## DevSecOps Pipeline: Step-by-Step
 
-### A. 📝 Git Workflow
+### A. Git Workflow
 
 1. **Commit & Push Changes**
    ```bash
@@ -98,7 +103,7 @@ images/               # Supporting screenshots & diagrams
 
 ---
 
-## 🏗️ Local Installation & Setup
+## Local Installation & Setup
 
 ### 1. Clone the Repository
 ```bash
@@ -125,7 +130,7 @@ pytest ../tests
 
 ---
 
-### B. 🔐 GitHub Token & Repo Secrets
+### B. GitHub Token & Repo Secrets
 
 - **Never share your personal access token!**  
   If exposed, revoke it immediately.
@@ -149,7 +154,7 @@ pytest ../tests
 
 ---
 
-### C. ☁️ AWS EC2 Setup
+### C. AWS EC2 Setup
 
 #### 1. Launch EC2 Instance
 - **Name:** devsecops-demo
@@ -172,7 +177,7 @@ ssh -i ~/Documents/devsecops.pem ubuntu@<EC2_PUBLIC_IP>
 
 ---
 
-### D. 🐳 Install Docker on EC2
+### D. Install Docker on EC2
 
 ```bash
 sudo apt update
@@ -185,7 +190,7 @@ docker ps
 
 ---
 
-### E. 📦 Run the Container
+### E. Run the Container
 
 1. **Login to GHCR (if private):**
    ```bash
@@ -202,11 +207,11 @@ docker ps
    ```
 
 ![Docker Running](images/docker_running.png)
-![Health Check](images/health_check.png)
+
 
 ---
 
-### F. ☸️ Install kind (Kubernetes in Docker)
+### F. Install kind (Kubernetes in Docker)
 
 ```bash
 curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.31.0/kind-linux-amd64
@@ -216,11 +221,10 @@ kind version
 kind create cluster --name devsecops-demo
 ```
 
-![Kind Cluster](images/kind_cluster.png)
 
 ---
 
-### G. 🛠️ Install kubectl
+### G. Install kubectl
 
 ```bash
 curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
@@ -230,11 +234,10 @@ kubectl config current-context
 kubectl get nodes
 ```
 
-![kubectl Nodes](images/kubectl_nodes.png)
 
 ---
 
-### H. 🚀 Install Argo CD (GitOps)
+### H. Install Argo CD (GitOps)
 
 ```bash
 kubectl create namespace argocd
@@ -262,14 +265,15 @@ kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.pas
 - **Username:** admin
 - **Password:** (output above)
 
-![ArgoCD Password](images/argocd_password.png)
-![ArgoCD Dashboard](images/argocd_dashboard.png)
+![ArgoCD Password](images/argocd_secret.png)
+![ArgoCD login](images/argocd_login.png)
 ![ArgoCD Config](images/argocd_config.png)
 ![ArgoCD Config](images/argocd_config2.png)
 ![ArgoCD Sync](images/argocd_sync.png)
+
 ---
 
-### I. 🔑 Kubernetes Image Pull Secret (for GHCR)
+### I. Kubernetes Image Pull Secret (for GHCR)
 
 ```bash
 export GHCR_TOKEN="paste_token_here"
@@ -281,11 +285,10 @@ kubectl create secret docker-registry github-container-registry \
 unset GHCR_TOKEN
 ```
 
-![K8s Secret](images/k8s_secret.png)
 
 ---
 
-### J. 📦 Deploy with Argo CD
+### J. Deploy with Argo CD
 
 - Add your Kubernetes manifests to `kubernetes/`
 - Create an Argo CD Application pointing to that folder
@@ -299,7 +302,7 @@ unset GHCR_TOKEN
 ---
 
 
-## 🐳 Docker Build & Local Testing
+## Docker Build & Local Testing
 
 ### 1. Build the Docker Image
 ```bash
@@ -319,7 +322,7 @@ curl http://localhost:5000/health
 
 ---
 
-## 🛠️ Troubleshooting
+## Troubleshooting
 
 1. **Docker login fails:**
    - Check token scopes and registry URL
@@ -332,17 +335,7 @@ For more help, see [GitHub Discussions](https://github.com/cybraman/devsecops-pr
 
 ---
 
-## 🏷️ Badges
-
-[![Build](https://img.shields.io/github/workflow/status/cybraman/devsecops-project/CI?style=for-the-badge)](https://github.com/cybraman/devsecops-project/actions)
-[![License](https://img.shields.io/github/license/cybraman/devsecops-project?style=for-the-badge)](https://github.com/cybraman/devsecops-project/blob/main/LICENSE)
-[![Contributors](https://img.shields.io/github/contributors/cybraman/devsecops-project?style=for-the-badge)](https://github.com/cybraman/devsecops-project/graphs/contributors)
-[![Issues](https://img.shields.io/github/issues/cybraman/devsecops-project?style=for-the-badge)](https://github.com/cybraman/devsecops-project/issues)
-[![Stars](https://img.shields.io/github/stars/cybraman/devsecops-project?style=for-the-badge)](https://github.com/cybraman/devsecops-project/stargazers)
-
----
-
-## 🤝 Contributing
+## Contributing
 
 We welcome contributions! Please follow these steps:
 
@@ -352,19 +345,19 @@ We welcome contributions! Please follow these steps:
 4. Push to your branch (`git push origin feature/your-feature`)
 5. Open a Pull Request ([PRs](https://github.com/cybraman/devsecops-project/pulls))
 
-### 📋 Issue & PR Templates
+### Issue & PR Templates
 - Use the provided issue template for bug reports and feature requests ([Issues](https://github.com/cybraman/devsecops-project/issues))
 - Use the PR template for clear, descriptive pull requests ([PRs](https://github.com/cybraman/devsecops-project/pulls))
 
 ---
 
-## 🛠️ Troubleshooting
+## Troubleshooting
 
 For more help, see [GitHub Discussions](https://github.com/cybraman/devsecops-project/discussions) or open an [issue](https://github.com/cybraman/devsecops-project/issues).
 
 ---
 
-## 📚 Resources
+## Resources
 
 - [Project Repository](https://github.com/cybraman/devsecops-project)
 - [Flask Documentation](https://flask.palletsprojects.com/)
@@ -375,7 +368,7 @@ For more help, see [GitHub Discussions](https://github.com/cybraman/devsecops-pr
 
 ---
 
-## 🏆 License
+## License
 
 MIT License — see [LICENSE](https://github.com/cybraman/devsecops-project/blob/main/LICENSE) for details.
 
