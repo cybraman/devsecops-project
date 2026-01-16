@@ -22,7 +22,7 @@ spec:
 
       containers:
         - name: flask-app
-          image: ghcr.io/cybraman/devsecops-project:sha-d01f50cc102a0f27461578c253941691247b90a2
+          image: ghcr.io/cybraman/devsecops-project:sha-924313a6c728ddf2d5dc68e385476a66656712f0
 
           # Image tag will be updated automatically by CI/CD
           imagePullPolicy: Always
