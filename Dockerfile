@@ -1,9 +1,10 @@
-FROM python:3.11.8-alpine
+FROM python:3.11-slim-bookworm
 
 WORKDIR /app
 
 # Create non-root user
 RUN adduser -D appuser
+RUN apk update && apk upgrade
 
 # Install dependencies first (better caching)
 COPY app/requirements.txt .

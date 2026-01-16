@@ -8,7 +8,7 @@
 ## Tech Stack & Project Badges
 
 <p align="left">
-  <img src="https://img.shields.io/badge/Python-3.11-blue?logo=python" alt="Python" />
+  <img src="https://img.shields.io/badge/Python-3.9-blue?logo=python" alt="Python" />
   <img src="https://img.shields.io/badge/Flask-2.3.2-green?logo=flask" alt="Flask" />
   <img src="https://img.shields.io/badge/Docker-Container-blue?logo=docker" alt="Docker" />
   <img src="https://img.shields.io/badge/GitHub%20Actions-CI%2FCD-2088FF?logo=github-actions&logoColor=white" alt="GitHub Actions" />
@@ -375,3 +375,4 @@ MIT License — see [LICENSE](https://github.com/cybraman/devsecops-project/blob
 ---
 
 > _Happy DevSecOps-ing!_ 🚀
+
