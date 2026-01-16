@@ -3,8 +3,8 @@ FROM python:3.11-slim-bookworm
 WORKDIR /app
 
 # Create non-root user
-RUN adduser -D appuser
-RUN apk update && apk upgrade
+RUN useradd -m appuser
+
 
 # Install dependencies first (better caching)
 COPY app/requirements.txt .
